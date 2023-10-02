@@ -1,21 +1,30 @@
-const express = require('express');
-const app = express()
-const path = require('path')
-const PORT = process.env.PORT || 3500
+import express from 'express';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
-app.use('/', express.static(path.join(__dirname, '/public')))
+import Routes from './routes/router.js';
+import Connection from './database/db.js';
 
-app.use('/', require('./routes/root'))
+const app = express();
 
-app.all('*', (req,res) => {
-    res.status(404) 
-    if (req.accepts('html')) {
-        res.sendFile(path.join(__dirname, 'views', '404.html'))
-    } else if(request.accepts('json')) {
-        res.json({message: '404 Not Found'})
-    } else{
-        res.type('txt').send('404 Not Found')
-    }
-})
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+dotenv.config();
+
+// To handle HTTP POST requests in Express.js version 4 and above, 
+// you need to install the middleware module called body-parser.
+// body-parser extracts the entire body portion of an incoming request stream and exposes it on req.body.
+app.use(bodyParser.json({extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
+app.use('/', Routes);
+
+const USERNAME = process.env.DB_USERNAME;
+const PASSWORD = process.env.DB_PASSWORD;
+
+const PORT = process.env.PORT || '3500'
+
+Connection(USERNAME, PASSWORD);
+ 
+app.listen(PORT, () => console.log(`Server is running successfully on PORT ${PORT}`));
