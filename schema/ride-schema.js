@@ -4,6 +4,9 @@ const rideSchema = mongoose.Schema({
     currentlocation: String,
     destination: String,
     numberofpeople: String,
+    vehiclenumber: String,
+    modelname: String,
+    vehicleimage: String
 });
 
 
