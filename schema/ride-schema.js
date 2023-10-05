@@ -6,7 +6,7 @@ const rideSchema = mongoose.Schema({
     numberofpeople: String,
     vehiclenumber: String,
     modelname: String,
-    vehicleimage: String
+    // vehicleimage: String
 });
 
 
